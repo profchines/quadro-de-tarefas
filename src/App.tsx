@@ -4,6 +4,7 @@ import { Header } from "./components/Header"
 import { ListTarefas } from "./components/ListTarefas"
 import { GlobalStyle } from "./styles/global"
 import { CustomModal } from './components/CustomModal'
+import { TarefasProvider } from './contexts/tarefaContext'
 
 Modal.setAppElement('#root')
 
@@ -22,17 +23,19 @@ function App() {
 
     return (
         <>
-            <GlobalStyle />
-            <Header
-                abrirModal={abrirModal}
-            />
+            <TarefasProvider>
+                <GlobalStyle />
+                <Header
+                    abrirModal={abrirModal}
+                />
 
-            <ListTarefas />
+                <ListTarefas />
 
-            <CustomModal
-                modalVisible={isVisibleModal}
-                fecharModal={fecharModal}
-            />
+                <CustomModal
+                    modalVisible={isVisibleModal}
+                    fecharModal={fecharModal}
+                />
+            </TarefasProvider>
         </>
     )
 }
