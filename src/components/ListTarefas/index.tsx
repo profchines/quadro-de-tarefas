@@ -15,9 +15,11 @@ export function ListTarefas() {
                     </h3>
 
                     {
-                        tarefas.map((tarefa) => {
+                        tarefas.map((tarefa, index) => {
                             return (
-                                <li>
+                                <li
+                                    key={index}
+                                >
                                     <div>
                                         <h4>
                                             {tarefa.titulo}

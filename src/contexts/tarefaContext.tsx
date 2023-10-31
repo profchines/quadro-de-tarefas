@@ -1,5 +1,10 @@
 import axios from "axios";
-import { ReactNode, createContext, useState, useEffect } from "react";
+import {
+    ReactNode,
+    createContext,
+    useState,
+    useEffect
+} from "react";
 
 interface Tarefas {
     titulo: string;
@@ -7,7 +12,8 @@ interface Tarefas {
 }
 
 interface PropsTarefaContext {
-    tarefas: Array<Tarefas>
+    tarefas: Array<Tarefas>;
+    createTarefa: (tarefas: Tarefas) => Promise<void>;
 }
 export const TarefaContext = createContext(
     {} as PropsTarefaContext
@@ -23,16 +29,29 @@ export function TarefasProvider({ children }: PropsTarefaProvider) {
 
     useEffect(() => {
         axios.get('/api/tarefas')
-        .then((res) => {
-            console.log('Andressa :D')
-            console.log(res.data)
-        })
+            .then((res) => {
+                console.log(res.data)
+                setTarefas(res.data.tarefas)
+            })
     }, [])
+
+    async function createTarefa(data: Tarefas) {
+
+        const resposta = await axios.post('/api/tarefas', data)
+
+        axios.get('/api/tarefas')//5min
+            .then((res) => {
+                setTarefas(res.data.tarefas)
+            })
+
+
+    }
 
 
     return (
         <TarefaContext.Provider value={{
-            tarefas
+            tarefas,
+            createTarefa
         }}>
             {children}
         </TarefaContext.Provider>
