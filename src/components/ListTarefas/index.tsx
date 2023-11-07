@@ -2,9 +2,13 @@ import { useContext } from 'react'
 import { Container } from "./styles";
 import { TarefaContext } from '../../contexts/tarefaContext';
 
-export function ListTarefas() {
+interface PropsListTarefas {
+    abrirModal: () => void;
+}
 
-    const { tarefas } = useContext(TarefaContext)
+export function ListTarefas(props: PropsListTarefas) {
+
+    const { tarefas, funEditarTarefa } = useContext(TarefaContext)
 
     return (
         <>
@@ -25,6 +29,17 @@ export function ListTarefas() {
                                             {tarefa.titulo}
                                         </h4>
                                         <p>{tarefa.descricao}</p>
+                                    </div>
+                                    <div>
+                                        <button
+                                            type='button'
+                                            onClick={() => {
+                                                funEditarTarefa({editar: true, tarefa: tarefa})
+                                                props.abrirModal();
+                                            }}
+                                        >
+                                            Editar
+                                        </button>
                                     </div>
 
                                 </li>

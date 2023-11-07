@@ -29,7 +29,9 @@ function App() {
                     abrirModal={abrirModal}
                 />
 
-                <ListTarefas />
+                <ListTarefas
+                    abrirModal={abrirModal}
+                />
 
                 <CustomModal
                     modalVisible={isVisibleModal}

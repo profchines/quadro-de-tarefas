@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useState } from 'react'
+import { FormEvent, useContext, useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import { FormContainer } from './styles'
 import { TarefaContext } from '../../contexts/tarefaContext';
@@ -10,22 +10,55 @@ interface PropsModal {
 
 export function CustomModal(props: PropsModal) {
 
-    const { createTarefa } = useContext(TarefaContext);
+    const {
+        createTarefa,
+        editarTarefa,
+        funSetTarefaDefault,
+        updateTarefa
+    } = useContext(TarefaContext);
 
     const [titulo, setTitulo] = useState('')
     const [descricao, setDescricao] = useState('')
 
+    useEffect(() => {
+        if (editarTarefa.editar) {
+
+            setTitulo(editarTarefa.tarefa?.titulo ? editarTarefa.tarefa.titulo : '')
+            setDescricao(editarTarefa.tarefa?.descricao ? editarTarefa.tarefa.descricao : '')
+        }
+        console.log('Todos')
+
+    }, [editarTarefa.editar])
+
+    function limparCamposEFecharModal() {
+        setTitulo('')
+        setDescricao('')
+        funSetTarefaDefault();
+        props.fecharModal()
+    }
+
+    // onSubmitModal
     function criarTarefa(event: FormEvent) {
         event.preventDefault()
 
-        createTarefa({
-            titulo: titulo,
-            descricao
-        })
+        if (editarTarefa.editar && editarTarefa.tarefa) {
 
-        setTitulo('')
-        setDescricao('')
-        props.fecharModal()
+            let objTarefa = {
+                ...editarTarefa.tarefa,
+                titulo,
+                descricao
+            }
+            updateTarefa(objTarefa)
+
+
+        } else {
+            createTarefa({
+                titulo: titulo,
+                descricao
+            })
+        }
+
+        limparCamposEFecharModal()
 
     }
 
@@ -34,12 +67,12 @@ export function CustomModal(props: PropsModal) {
             isOpen={props.modalVisible}
             overlayClassName="react-modal-overlay"
             className="react-modal-content"
-            onRequestClose={props.fecharModal}
+            onRequestClose={limparCamposEFecharModal}
         >
             <button
                 type='button'
                 className='react-modal-close'
-                onClick={props.fecharModal}
+                onClick={limparCamposEFecharModal}
             >
                 X
             </button>
