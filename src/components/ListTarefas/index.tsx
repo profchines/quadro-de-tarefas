@@ -21,6 +21,83 @@ export function ListTarefas(props: PropsListTarefas) {
                     {
                         tarefas.map((tarefa, index) => {
                             return (
+                                tarefa.quadro === 'quadro1' ?
+                                    <li
+                                        key={index}
+                                    >
+                                        <div>
+                                            <h4>
+                                                {tarefa.titulo}
+                                            </h4>
+                                            <p>{tarefa.descricao}</p>
+                                        </div>
+                                        <div>
+                                            <button
+                                                type='button'
+                                                onClick={() => {
+                                                    funEditarTarefa({ editar: true, tarefa: tarefa })
+                                                    props.abrirModal();
+                                                }}
+                                            >
+                                                Editar
+                                            </button>
+                                        </div>
+
+                                    </li>
+                                    :
+                                    <></>
+                            )
+                        })
+                    }
+
+                </ul>
+                <ul>
+                    <h3>
+                        Quadro 2
+                    </h3>
+
+                    {
+                        tarefas.map((tarefa, index) => {
+                            return (
+                                tarefa.quadro === 'quadro2' ?
+                                    <li
+                                        key={index}
+                                    >
+                                        <div>
+                                            <h4>
+                                                {tarefa.titulo}
+                                            </h4>
+                                            <p>{tarefa.descricao}</p>
+                                        </div>
+                                        <div>
+                                            <button
+                                                type='button'
+                                                onClick={() => {
+                                                    funEditarTarefa({ editar: true, tarefa: tarefa })
+                                                    props.abrirModal();
+                                                }}
+                                            >
+                                                Editar
+                                            </button>
+                                        </div>
+
+                                    </li>
+                                    :
+                                    <></>
+                            )
+                        })
+                    }
+
+                </ul>
+                <ul>
+                    <h3>
+                        Quadro 3
+                    </h3>
+
+                    {
+                        tarefas.map((tarefa, index) => {
+                            return (
+                                tarefa.quadro === 'quadro3' ?
                                 <li
                                     key={index}
                                 >
@@ -43,6 +120,8 @@ export function ListTarefas(props: PropsListTarefas) {
                                     </div>
 
                                 </li>
+                                :
+                                <></>
                             )
                         })
                     }

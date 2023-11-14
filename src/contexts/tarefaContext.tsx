@@ -5,15 +5,18 @@ import {
     useState,
     useEffect
 } from "react";
+import { Loading } from "../components/Loading";
 
 interface Tarefas {
     titulo: string;
     descricao: string;
+    quadro: string;
 }
 interface TarefasWithID {
     id: string;
     titulo: string;
     descricao: string;
+    quadro: string;
 }
 
 // exemplo de type para omitir atributo
@@ -31,6 +34,7 @@ interface PropsTarefaContext {
     funEditarTarefa: (tarefas: DataEditarTarefa) => void;
     funSetTarefaDefault: () => void;
     editarTarefa: DataEditarTarefa;
+    deletarTarefa: (tarefas: TarefasWithID) => Promise<void>;
 }
 export const TarefaContext = createContext(
     {} as PropsTarefaContext
@@ -56,7 +60,7 @@ export function TarefasProvider({ children }: PropsTarefaProvider) {
 
     async function createTarefa(data: Tarefas) {
 
-        const resposta = await axios.post('/api/tarefas', data)
+        await axios.post('/api/tarefas', data)
 
         axios.get('/api/tarefas')//5min
             .then((res) => {
@@ -68,7 +72,21 @@ export function TarefasProvider({ children }: PropsTarefaProvider) {
 
     async function updateTarefa(data: TarefasWithID) {
 
-        const resposta = await axios.put('/api/tarefas', data)
+        await axios.put('/api/tarefas', data)
+
+        axios.get('/api/tarefas')//5min
+            .then((res) => {
+                setTarefas(res.data.tarefas)
+            })
+
+
+    }
+
+    async function deletarTarefa(data: TarefasWithID) {
+
+        await axios.delete('/api/tarefas/'+data.id, {
+            data: data
+        })
 
         axios.get('/api/tarefas')//5min
             .then((res) => {
@@ -94,8 +112,10 @@ export function TarefasProvider({ children }: PropsTarefaProvider) {
             editarTarefa,
             funEditarTarefa,
             funSetTarefaDefault,
-            updateTarefa
+            updateTarefa,
+            deletarTarefa
         }}>
+            <Loading visible={true} />
             {children}
         </TarefaContext.Provider>
     )

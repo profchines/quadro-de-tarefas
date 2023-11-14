@@ -22,6 +22,15 @@ createServer({
 
             return schema.db.tarefas.update(data.id, data)
         })
+
+        this.delete('/api/tarefas/:id', (schema, request) => {
+            // const data = JSON.parse(request.requestBody)
+            const id = request.params.id
+
+            schema.db.tarefas.remove(id)
+
+            return {response: 'Tarefa deletada com sucesso! :D'}
+        })
     }
 })
 

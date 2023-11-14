@@ -52,4 +52,21 @@ export const FormContainer = styled.form`
 
     }
 
+    button[type='button'] {
+        width: 100%;
+        padding: 0 1.5rem;
+        height: 4rem;
+        background-color: #933b27;
+        color: #fff;
+        border-radius: 8px;
+        border: 0;
+        font-size: 1rem;
+        margin-top: 1.5rem;
+
+        &:hover {
+            filter: brightness(0.9);
+        }
+
+    }
+
 `

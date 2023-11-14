@@ -14,17 +14,20 @@ export function CustomModal(props: PropsModal) {
         createTarefa,
         editarTarefa,
         funSetTarefaDefault,
-        updateTarefa
+        updateTarefa,
+        deletarTarefa
     } = useContext(TarefaContext);
 
     const [titulo, setTitulo] = useState('')
     const [descricao, setDescricao] = useState('')
+    const [quadro, setQuadro] = useState('quadro1')
 
     useEffect(() => {
         if (editarTarefa.editar) {
 
             setTitulo(editarTarefa.tarefa?.titulo ? editarTarefa.tarefa.titulo : '')
             setDescricao(editarTarefa.tarefa?.descricao ? editarTarefa.tarefa.descricao : '')
+            setQuadro(editarTarefa.tarefa?.quadro ? editarTarefa.tarefa.quadro : 'quadro1')
         }
         console.log('Todos')
 
@@ -33,6 +36,7 @@ export function CustomModal(props: PropsModal) {
     function limparCamposEFecharModal() {
         setTitulo('')
         setDescricao('')
+        setDescricao('quadro1')
         funSetTarefaDefault();
         props.fecharModal()
     }
@@ -46,7 +50,8 @@ export function CustomModal(props: PropsModal) {
             let objTarefa = {
                 ...editarTarefa.tarefa,
                 titulo,
-                descricao
+                descricao,
+                quadro
             }
             updateTarefa(objTarefa)
 
@@ -54,12 +59,20 @@ export function CustomModal(props: PropsModal) {
         } else {
             createTarefa({
                 titulo: titulo,
-                descricao
+                descricao,
+                quadro
             })
         }
 
         limparCamposEFecharModal()
 
+    }
+
+    function onClickExcluirTarefa() {
+        if (editarTarefa.tarefa) {
+            deletarTarefa(editarTarefa.tarefa)
+            limparCamposEFecharModal()
+        }
     }
 
     return (
@@ -82,6 +95,15 @@ export function CustomModal(props: PropsModal) {
             >
                 <h2>Cadastrar Tarefa</h2>
 
+                <select
+                    value={quadro}
+                    onChange={(val) => setQuadro(val.target.value)}
+                >
+                    <option value="quadro1">Quadro 1</option>
+                    <option value="quadro2">Quadro 2</option>
+                    <option value="quadro3">Quadro 3</option>
+                </select>
+
                 <input
                     type="text"
                     placeholder='Título'
@@ -100,6 +122,19 @@ export function CustomModal(props: PropsModal) {
                 <button type='submit'>
                     Cadastrar
                 </button>
+
+                {
+                    editarTarefa.editar ?
+                        <button type='button'
+                            onClick={() => {
+                                onClickExcluirTarefa()
+                            }}
+                        >
+                            Excluir
+                        </button>
+                        :
+                        <></>
+                }
             </FormContainer>
 
         </Modal>

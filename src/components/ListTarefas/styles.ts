@@ -8,6 +8,8 @@ export const Container = styled.div`
     display: flex;
     justify-content: center;
 
+    flex-wrap: wrap;
+
     ul {
         width: 30rem;
         border-radius: 8px;
